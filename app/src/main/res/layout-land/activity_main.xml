@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/integra_background"
+        android:scaleType="centerCrop"
+        android:contentDescription="Logo do IntegraTech" />
+
+    <Button
+        android:id="@+id/btnAumentarFonte"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="36dp"
+        android:text="Ajustar fonte do celular"
+        android:backgroundTint="#FFFFFF"
+        android:textColor="#222222" />
+
+</FrameLayout>
