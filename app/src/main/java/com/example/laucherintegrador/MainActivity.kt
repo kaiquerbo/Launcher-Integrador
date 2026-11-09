@@ -1,28 +1,52 @@
 package com.example.laucherintegrador
 
-import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
-import android.provider.Settings
-import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.launcherintegrador.R
 
-class MainActivity : Activity() {
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var listaApps: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_main)
 
-        val botao = findViewById<Button>(
-            R.id.btnAumentarFonte
+        listaApps = findViewById(R.id.listaApps)
+
+        val aplicativos = carregarAplicativos()
+
+        listaApps.layoutManager = LinearLayoutManager(this)
+        listaApps.adapter = AppAdapter(this, aplicativos)
+    }
+
+    private fun carregarAplicativos(): List<AppInfo> {
+
+        val lista = mutableListOf<AppInfo>()
+
+        val intent = Intent(Intent.ACTION_MAIN)
+        intent.addCategory(Intent.CATEGORY_LAUNCHER)
+
+        val aplicativos = packageManager.queryIntentActivities(
+            intent,
+            PackageManager.MATCH_ALL
         )
 
-        botao.setOnClickListener {
-            val intent = Intent(
-                Settings.ACTION_DISPLAY_SETTINGS
+        for (app in aplicativos) {
+
+            val nome = app.loadLabel(packageManager).toString()
+            val pacote = app.activityInfo.packageName
+            val icone = app.loadIcon(packageManager)
+
+            lista.add(
+                AppInfo(nome, pacote, icone)
             )
-            startActivity(intent)
         }
+
+        return lista.sortedBy { it.nome }
     }
 }
